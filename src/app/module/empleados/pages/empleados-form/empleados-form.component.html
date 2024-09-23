@@ -1,0 +1,128 @@
+<div class="card bg-dark text-white my-2">
+  <div class="card-header">
+    {{ titulo }}
+  </div>
+  <div class="card-body">
+    <form class="row g-3" [formGroup]="form">
+      <div class="col-12">
+        <app-form-errors></app-form-errors>
+      </div>
+      <div class="col-6">
+        <label class="form-label">Cedula:</label>
+        <input
+          type="text"
+          formControlName="cedula"
+          class="form-control"
+          id="apellido"
+          [ngClass]="{
+            'ng-invalid ng-dirty is-invalid':
+              cedula.invalid && (cedula.dirty || cedula.touched)
+          }"
+          autocomplete="off"
+          required
+        />
+
+        <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
+          <span *ngIf="cedula.errors?.['required']" class="text-danger">
+            Cédula es obligatoria
+          </span>
+        </div>
+      </div>
+      <div class="col-6">
+        <label class="form-label">Nombre:</label>
+        <input
+          type="text"
+          formControlName="nombre"
+          class="form-control"
+          id="nombre"
+          [ngClass]="{
+            'ng-invalid ng-dirty is-invalid':
+              nombre.invalid && (nombre.dirty || nombre.touched)
+          }"
+          autocomplete="off"
+          minlength="4"
+          maxlength="60"
+          required
+        />
+        <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+          <span *ngIf="nombre.errors?.['required']" class="text-danger">
+            Nombre es obligatorio
+          </span>
+        </div>
+      </div>
+      <div class="col-6">
+        <label class="form-label">Fecha ingreso:</label>
+        <div class="col-12">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [max]="maxFecha"
+            formControlName="fechaIngreso"
+            class="form-control"
+            (dateChange)="asignarFecha($event)"
+            style="display: inline !important; width: fit-content"
+            required
+            [ngClass]="{
+              'ng-invalid ng-dirty is-invalid':
+                fechaIngreso.invalid &&
+                (fechaIngreso.dirty || fechaIngreso.touched)
+            }"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+
+        <div
+          *ngIf="
+            fechaIngreso.invalid && (fechaIngreso.dirty || fechaIngreso.touched)
+          "
+        >
+          <span *ngIf="fechaIngreso.errors?.['required']" class="text-danger">
+            Fecha ingreso es obligatoria
+          </span>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <label class="form-label">Cargo:</label>
+        <select
+          class="form-select"
+          formControlName="cargo"
+          [compareWith]="compararRegion"
+          id="region"
+          [ngClass]="{
+            'ng-invalid ng-dirty is-invalid':
+              cargo.invalid && (cargo.dirty || cargo.touched)
+          }"
+          autocomplete="off"
+          required
+        >
+          <option [ngValue]="null">Seleccione región</option>
+          <option *ngFor="let cargo of cargos$ | async" [ngValue]="cargo">
+            {{ cargo.nombre }}
+          </option>
+        </select>
+
+        <div *ngIf="cargo.invalid && (cargo.dirty || cargo.touched)">
+          <span *ngIf="cargo.errors?.['required']" class="text-danger">
+            Debe seleccionar una región
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="procesar()"
+          [disabled]="form.invalid"
+        >
+          {{ edicion ? "Actualizar" : "Guardar" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

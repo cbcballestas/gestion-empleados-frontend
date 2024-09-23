@@ -1,0 +1,11 @@
+<div
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  *ngIf="isAlertEnabled"
+>
+  <h4 class="alert-heading">Aviso</h4>
+  <hr />
+  <ul>
+    <li *ngFor="let error of errores">{{ error }}</li>
+  </ul>
+</div>

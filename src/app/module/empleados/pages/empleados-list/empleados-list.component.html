@@ -1,0 +1,83 @@
+<app-empleado-detail></app-empleado-detail>
+<div class="card border-dark mb-3">
+  <div class="card-header">Empleados</div>
+  <div class="card-body table-responsive">
+    <h5 class="card-title">Listado de empleados</h5>
+
+    <div class="my-2 text-left">
+      <button
+        class="btn btn-primary btn-rounded"
+        type="button"
+        routerLink="/empleados/nuevo"
+      >
+        Nuevo empleado
+      </button>
+    </div>
+
+    <table
+      class="table table-hover"
+      *ngIf="empleados!.length > 0; else sinEmpleadosBlock"
+    >
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Cedula</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Fecha Ingreso</th>
+          <th scope="col">Cargo</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngFor="let item of empleados; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ item.cedula }}</td>
+          <td>{{ item.nombre }}</td>
+          <td>{{ item.fechaIngreso | date : "yyyy-MM-dd" }}</td>
+          <td>{{ item.cargo?.nombre }}</td>
+          <td class="row">
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                (click)="openCustomerDetailModal(item)"
+                title="Información adicional"
+              >
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-warning"
+                [routerLink]="['/empleados/editar', item.empleadoId]"
+                title="Editar"
+              >
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="deleteCustomerById(item, i)"
+                title="Eliminar"
+              >
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #sinEmpleadosBlock>
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Aviso!</h4>
+        <p>No se encuentran empleados registrados!</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

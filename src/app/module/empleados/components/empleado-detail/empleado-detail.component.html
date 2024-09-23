@@ -1,0 +1,105 @@
+<!-- Modal -->
+<div
+  class="abir-modal animacion fadeIn"
+  *ngIf="modalDetalleEmpleadoService.isModalOpened"
+>
+  <div
+    class="modal modal-lg"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+    style="display: block"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">{{ titulo }}</h1>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="closeCustomerDetailModal()"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm">
+                <ul *ngIf="empleado" class="list-group list-group-flush mb-3">
+                  <li class="list-group-item active">
+                    {{ empleado.nombre }}
+                  </li>
+                  <li class="list-group-item">{{ empleado.cedula }}</li>
+                  <li class="list-group-item">{{ empleado.cargo?.nombre }}</li>
+                  <li class="list-group-item">
+                    {{ empleado.fechaIngreso | date: "fullDate" }}
+                  </li>
+                </ul>
+
+                <div class="input-group mb-3">
+                  <input
+                    #foto
+                    type="file"
+                    accept="image/*"
+                    (change)="onSelectFile()"
+                    class="form-control"
+                    id="inputGroupFile04"
+                    aria-describedby="inputGroupFileAddon04"
+                    aria-label="Upload"
+                  />
+                  <button
+                    [disabled]="!archivoSeleccionado"
+                    (click)="uploadProfilePhoto()"
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="inputGroupFileAddon04"
+                  >
+                    Subir
+                  </button>
+                </div>
+
+                <!-- Barra de progreso -->
+                <div
+                  class="progress mb-3"
+                  *ngIf="progreso > 0"
+                  style="height: 40px"
+                >
+                  <div
+                    class="progress-bar progress-bar-striped bg-success"
+                    role="progressbar"
+                    aria-label="Default striped example"
+                    [ngStyle]="{ width: progreso + '%' }"
+                    attr.aria-valuenow="{{ progreso }}"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {{ progreso }}%
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <img
+                  class="img-thumbnail img-fluid"
+                  src="{{ empleado?.foto | profilePhoto }}"
+                  alt="{{ empleado?.foto ?? 'Sin foto' }}"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            (click)="closeCustomerDetailModal()"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
